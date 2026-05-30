@@ -9,7 +9,7 @@ public class AuthController
 {
     private readonly AuthService _auth;
 
-    public AuthController(AuthService auth) => _auth = auth;
+    public AuthController(AuthService auth) => _auth =  auth;
 
     public async Task<(bool Success, string Message)> LoginAsync(string username, string password, bool rememberMe)
     {
