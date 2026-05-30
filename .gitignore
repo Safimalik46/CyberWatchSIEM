@@ -4,4 +4,8 @@
 # But not these
 !/Assets/
 !/Assets/**
+!/bin/
+!/bin/**
+!/.vs/
+!/.vs/**
 !/.gitignore
