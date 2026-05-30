@@ -1,7 +1,7 @@
 -- CyberWatch SIEM Database Creation Script
 -- SQL Server LocalDB
 
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'CyberWatchSIEM')
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name  = N'CyberWatchSIEM')
 BEGIN
     CREATE DATABASE CyberWatchSIEM;
 END
