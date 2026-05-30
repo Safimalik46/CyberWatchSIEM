@@ -1,0 +1,21 @@
+# Ignore everything
+*
+
+# But not these
+!/Assets/
+!/Assets/**
+!/bin/
+!/bin/**
+!/.vs/
+!/.vs/**
+!/.gitignore
+!/charts/
+!/charts/**
+!/Controllers/
+!/Controllers/**
+!/Database/
+!/Database/**
+!/Helpers/
+!/Helpers/**
+!/obj/
+!/obj/**
