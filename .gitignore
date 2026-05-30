@@ -9,3 +9,13 @@
 !/.vs/
 !/.vs/**
 !/.gitignore
+!/charts/
+!/charts/**
+!/Controllers/
+!/Controllers/**
+!/Database/
+!/Database/**
+!/Helpers/
+!/Helpers/**
+!/obj/
+!/obj/**

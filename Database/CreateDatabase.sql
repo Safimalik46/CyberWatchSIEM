@@ -1,0 +1,119 @@
+-- CyberWatch SIEM Database Creation Script
+-- SQL Server LocalDB
+
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'CyberWatchSIEM')
+BEGIN
+    CREATE DATABASE CyberWatchSIEM;
+END
+GO
+
+USE CyberWatchSIEM;
+GO
+
+IF OBJECT_ID(N'dbo.Users', N'U') IS NULL
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(128) NOT NULL,
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL,
+    Role NVARCHAR(20) NOT NULL DEFAULT 'Analyst',
+    IsActive BIT NOT NULL DEFAULT 1,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    LastLogin DATETIME2 NULL
+);
+
+IF OBJECT_ID(N'dbo.Logs', N'U') IS NULL
+CREATE TABLE Logs (
+    LogId INT IDENTITY(1,1) PRIMARY KEY,
+    EventId NVARCHAR(50) NOT NULL,
+    Timestamp DATETIME2 NOT NULL,
+    SourceIP NVARCHAR(45) NOT NULL,
+    DestinationIP NVARCHAR(45) NOT NULL,
+    Username NVARCHAR(100) NOT NULL,
+    EventType NVARCHAR(50) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    Message NVARCHAR(MAX) NOT NULL,
+    Country NVARCHAR(10) NULL,
+    MitreTechnique NVARCHAR(20) NULL,
+    ThreatScore INT NOT NULL DEFAULT 0
+);
+
+IF OBJECT_ID(N'dbo.Alerts', N'U') IS NULL
+CREATE TABLE Alerts (
+    AlertId INT IDENTITY(1,1) PRIMARY KEY,
+    AlertCode NVARCHAR(50) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    Time DATETIME2 NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'New',
+    SourceIP NVARCHAR(45) NULL,
+    AlertType NVARCHAR(50) NOT NULL,
+    RelatedLogId INT NULL
+);
+
+IF OBJECT_ID(N'dbo.Incidents', N'U') IS NULL
+CREATE TABLE Incidents (
+    IncidentId INT IDENTITY(1,1) PRIMARY KEY,
+    IncidentCode NVARCHAR(50) NOT NULL,
+    AlertName NVARCHAR(200) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT 'Open',
+    AssignedTo NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Resolution NVARCHAR(MAX) NOT NULL DEFAULT '',
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    UpdatedAt DATETIME2 NULL
+);
+
+IF OBJECT_ID(N'dbo.MaliciousIPs', N'U') IS NULL
+CREATE TABLE MaliciousIPs (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IPAddress NVARCHAR(45) NOT NULL,
+    ThreatType NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    AddedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+);
+
+IF OBJECT_ID(N'dbo.SuspiciousDomains', N'U') IS NULL
+CREATE TABLE SuspiciousDomains (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Domain NVARCHAR(255) NOT NULL,
+    Category NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    AddedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+);
+
+IF OBJECT_ID(N'dbo.MalwareSignatures', N'U') IS NULL
+CREATE TABLE MalwareSignatures (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Signature NVARCHAR(255) NOT NULL,
+    MalwareFamily NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(MAX) NOT NULL,
+    Severity NVARCHAR(20) NOT NULL,
+    AddedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+);
+
+IF OBJECT_ID(N'dbo.AuditLogs', N'U') IS NULL
+CREATE TABLE AuditLogs (
+    AuditId INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(50) NOT NULL,
+    Action NVARCHAR(100) NOT NULL,
+    EntityType NVARCHAR(50) NOT NULL,
+    Details NVARCHAR(MAX) NOT NULL,
+    Timestamp DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+);
+
+IF OBJECT_ID(N'dbo.Settings', N'U') IS NULL
+CREATE TABLE Settings (
+    SettingId INT IDENTITY(1,1) PRIMARY KEY,
+    [Key] NVARCHAR(100) NOT NULL UNIQUE,
+    Value NVARCHAR(MAX) NOT NULL,
+    Category NVARCHAR(50) NOT NULL DEFAULT 'General'
+);
+GO
+
+PRINT 'CyberWatch SIEM database schema created successfully.';
+GO
