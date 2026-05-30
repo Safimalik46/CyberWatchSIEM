@@ -41,7 +41,7 @@ public static class ChartFactory
 
     public static Axis[] CreateCategoryAxis(string[] labels, int rotation = 0) =>
     [
-        new Axis { Labels = labels, LabelsRotation = rotation, TextSize = 10 }
+        new Axis { Labels  = labels, LabelsRotation = rotation, TextSize = 11 }
     ];
 
     private static SKColor ToSkColor(Color c) => new(c.R, c.G, c.B);
