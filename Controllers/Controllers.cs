@@ -19,7 +19,7 @@ public class AuthController
         return (result.Success, result.Message);
     }
 
-    public Task LogoutAsync() => _auth.LogoutAsync();
+    public Task LogoutAsync()  => _auth.LogoutAsync();
 }
 
 public class DashboardController
