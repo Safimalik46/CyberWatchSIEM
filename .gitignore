@@ -19,3 +19,5 @@
 !/Helpers/**
 !/obj/
 !/obj/**
+!/Models/
+!/Models/**
